@@ -35,7 +35,7 @@ Démo vidéo (46 s) : [docs/demo.mp4](docs/demo.mp4)
 
 - **Front** : HTML, CSS et JavaScript, sans framework ni étape de build (`site/`). PWA installable.
 - **Back** : Supabase (Postgres). Toute la logique sensible passe par des fonctions SQL `SECURITY DEFINER`, avec des droits minimaux et la RLS activée. Les visiteurs n'ont accès qu'à quatre fonctions (`supabase.sql`).
-- **Hébergement** : n'importe quel hébergement statique. Les en-têtes de sécurité (CSP stricte, etc.) sont fournis pour Netlify dans `site/_headers`.
+- **Hébergement** : GitHub Pages, mis en ligne automatiquement par `.github/workflows/pages.yml` à chaque modification de `site/`. La politique de sécurité (CSP) est intégrée aux pages. `site/_headers` reste fourni pour Netlify.
 
 ```
 site/          l'application à mettre en ligne
@@ -50,7 +50,7 @@ docs/          captures et démo
 1. Crée un projet Supabase, puis exécute `supabase.sql` dans le SQL Editor.
 2. Crée ton compte dans Authentication, puis rattache-le comme admin (voir `GUIDE.md`, étape 2).
 3. Renseigne l'URL du projet et la clé `anon` dans `site/config.js`. La clé `anon` est publique par conception : la sécurité repose sur la base.
-4. Mets en ligne le dossier `site/`. Sur Netlify, choisis `site` comme *Publish directory*.
+4. Dans GitHub : **Settings → Pages → Source : GitHub Actions**. Le site est ensuite publié sur `https://<compte>.github.io/<dépôt>/`, et l'espace famille sur `…/admin.html`.
 
 ## Tests
 
