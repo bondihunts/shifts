@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f6f3ee">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pointage">
+<title>Pointage</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icones/icone-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icones/icone-180.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header class="entete">
+    <span class="foyer" id="foyer">Pointage</span>
+    <span class="horloge" id="horloge" aria-label="Heure actuelle"></span>
+  </header>
+  <section class="ecran" id="ecran" aria-live="polite">
+    <div class="chargement" role="status" aria-label="Chargement"></div>
+  </section>
+</main>
+<noscript><p class="centre">Cette page a besoin de JavaScript pour fonctionner.</p></noscript>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha256-hZaWX+kY5lZgChtWjToWj1wNPSKmAIhrtvRKZVXbAec=" crossorigin="anonymous"></script>
+<script src="config.js"></script>
+<script src="commun.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

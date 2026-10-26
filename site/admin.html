@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f6f3ee">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<title>Pointage — espace famille</title>
+<link rel="icon" href="icones/icone-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="icones/icone-180.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Connexion -->
+<main id="vue-connexion" class="connexion cache">
+  <div class="carte">
+    <h1 style="font-size:24px;margin-bottom:14px">Espace famille</h1>
+    <div id="connexion-msg" class="message erreur cache" role="alert" style="padding:12px;margin-bottom:12px"></div>
+    <form id="form-connexion" class="pile">
+      <label class="champ">Email <input type="email" id="email" required autocomplete="username"></label>
+      <label class="champ">Mot de passe <input type="password" id="mdp" autocomplete="current-password"></label>
+      <button class="btn btn-plein btn-large" type="submit">Se connecter</button>
+    </form>
+    <p class="centre" style="margin:12px 0 0">
+      <button class="lien" id="lien-magique" type="button">Recevoir un lien de connexion par email</button><br>
+      <button class="lien" id="mdp-oublie" type="button">Mot de passe oublié</button>
+    </p>
+  </div>
+</main>
+
+<!-- Nouveau mot de passe (après « mot de passe oublié ») -->
+<main id="vue-nouveau-mdp" class="connexion cache">
+  <div class="carte">
+    <h1 style="font-size:24px;margin-bottom:14px">Choisir un nouveau mot de passe</h1>
+    <form id="form-nouveau-mdp" class="pile">
+      <label class="champ">Nouveau mot de passe (8 caractères minimum)
+        <input type="password" id="nouveau-mdp" minlength="8" required autocomplete="new-password"></label>
+      <button class="btn btn-plein btn-large" type="submit">Enregistrer</button>
+    </form>
+  </div>
+</main>
+
+<!-- Application -->
+<div id="vue-admin" class="admin cache">
+  <header class="admin-entete">
+    <h1 id="titre">Heures des assistantes</h1>
+    <span class="doux petit" id="qui"></span>
+  </header>
+  <nav class="onglets" role="tablist" aria-label="Sections">
+    <button role="tab" id="t-heures" aria-controls="p-heures" aria-selected="true">Heures<span id="pastille" class="pastille cache"></span></button>
+    <button role="tab" id="t-pointages" aria-controls="p-pointages" aria-selected="false" tabindex="-1">Pointages</button>
+    <button role="tab" id="t-assistantes" aria-controls="p-assistantes" aria-selected="false" tabindex="-1">Assistantes</button>
+    <button role="tab" id="t-reglages" aria-controls="p-reglages" aria-selected="false" tabindex="-1">Réglages</button>
+  </nav>
+  <div id="sur-place" class="sur-place cache" role="status"></div>
+
+  <!-- Heures -->
+  <section role="tabpanel" id="p-heures" aria-labelledby="t-heures">
+    <div class="carte a-traiter cache" id="carte-traiter">
+      <h2>À traiter <span class="doux petit" id="nb-traiter"></span></h2>
+      <div id="liste-traiter"></div>
+    </div>
+    <div class="barre">
+      <button class="btn" id="mois-prec" type="button" aria-label="Mois précédent">←</button>
+      <strong id="mois-libelle" class="mois-libelle" aria-live="polite"></strong>
+      <button class="btn" id="mois-suiv" type="button" aria-label="Mois suivant">→</button>
+      <span style="flex:1"></span>
+      <button class="btn" id="export" type="button">Télécharger pour Excel</button>
+    </div>
+    <div class="totaux" id="totaux"></div>
+    <div class="carte">
+      <h2>Détail des interventions</h2>
+      <div class="tableau-wrap double"><table id="table-sessions"></table></div>
+      <ul class="liste-mobile" id="liste-sessions"></ul>
+    </div>
+  </section>
+
+  <!-- Pointages -->
+  <section role="tabpanel" id="p-pointages" aria-labelledby="t-pointages" class="cache">
+    <div class="barre"><button class="btn btn-plein" type="button" id="ajouter-pointage">+ Ajouter un pointage oublié</button></div>
+    <div class="carte">
+      <h2>Pointages — <span id="mois-libelle-2" style="text-transform:capitalize"></span></h2>
+      <p class="aide">Un pointage ne se supprime jamais : « Retirer » le garde visible, barré. Changez de mois avec les flèches de l'onglet Heures.</p>
+      <div class="tableau-wrap double"><table id="table-pointages"></table></div>
+      <ul class="liste-mobile" id="liste-pointages"></ul>
+    </div>
+    <div class="carte">
+      <h2>Pointages refusés</h2>
+      <p class="aide">Tentatives bloquées parce que le téléphone n'était pas au domicile (la position n'est pas gardée, seulement la distance).</p>
+      <div class="tableau-wrap"><table class="cartes" id="table-refus"></table></div>
+    </div>
+    <div class="carte">
+      <details id="det-journal">
+        <summary>Historique des modifications de la famille</summary>
+        <div class="tableau-wrap"><table class="cartes" id="table-journal"></table></div>
+      </details>
+    </div>
+  </section>
+
+  <!-- Assistantes -->
+  <section role="tabpanel" id="p-assistantes" aria-labelledby="t-assistantes" class="cache">
+    <div class="carte">
+      <h2>Ajouter une assistante</h2>
+      <form id="form-assistante" class="formulaire">
+        <label class="champ">Prénom <input type="text" id="a-prenom" required maxlength="40"></label>
+        <label class="champ">Taux horaire net (€, facultatif) <input type="number" id="a-taux" step="0.01" min="0" max="500" inputmode="decimal"></label>
+        <button class="btn btn-plein" type="submit">Ajouter</button>
+      </form>
+    </div>
+    <div class="carte">
+      <h2>Assistantes</h2>
+      <p class="aide">Envoyez à chacune son lien personnel. Elle l'ouvre une fois sur son téléphone, puis l'ajoute à son écran d'accueil.</p>
+      <div id="table-assistantes"></div>
+    </div>
+  </section>
+
+  <!-- Réglages -->
+  <section role="tabpanel" id="p-reglages" aria-labelledby="t-reglages" class="cache">
+    <form id="form-reglages">
+      <div class="carte">
+        <h2>Domicile</h2>
+        <div class="pile">
+          <label class="champ">Adresse <input type="text" id="r-adresse" autocomplete="street-address"></label>
+          <div class="actions">
+            <button class="btn" type="button" id="r-geocoder">Trouver l'adresse sur la carte</button>
+            <button class="btn" type="button" id="r-ici">Je suis au domicile : utiliser ma position</button>
+          </div>
+          <p class="aide" id="r-position"></p>
+          <iframe id="r-carte" class="carte-map cache" title="Carte du domicile" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <label class="champ">Distance autorisée autour du domicile
+            <select id="r-rayon">
+              <option value="100">100 m</option><option value="150">150 m (conseillé)</option>
+              <option value="200">200 m</option><option value="250">250 m</option><option value="400">400 m</option>
+            </select>
+            <span class="aide">Augmentez seulement si des assistantes sont refusées alors qu'elles sont sur place.</span></label>
+        </div>
+      </div>
+      <div class="carte">
+        <h2>Interventions</h2>
+        <div class="formulaire">
+          <label class="champ">Signaler les interventions de plus de (par défaut)
+            <select id="r-alerte">
+              <option value="10">10 h</option><option value="13">13 h</option><option value="15">15 h</option>
+              <option value="25">25 h</option>
+            </select></label>
+          <label class="champ">Durée maximale d'une garde
+            <select id="r-max"><option value="14">14 h</option><option value="26">26 h (conseillé)</option><option value="36">36 h</option><option value="48">48 h</option></select></label>
+          <label class="champ">Téléphone de la famille (pour les assistantes)
+            <input type="tel" id="r-tel" placeholder="06 12 34 56 78" autocomplete="tel"></label>
+        </div>
+        <p class="aide">Les interventions plus longues que ce seuil ne sont comptées qu'après confirmation. Pour une assistante qui fait des gardes de 24 h, choisissez « Gardes de 24 h » dans sa fiche (onglet Assistantes).<br>
+        Le téléphone de la famille s'affiche sur l'app des assistantes quand le pointage ne marche pas (appel, SMS, WhatsApp).</p>
+      </div>
+      <div class="carte">
+        <details>
+          <summary>Réglages avancés</summary>
+          <div class="formulaire">
+            <label class="champ">Latitude <input type="number" step="any" id="r-lat" min="-90" max="90"></label>
+            <label class="champ">Longitude <input type="number" step="any" id="r-lng" min="-180" max="180"></label>
+            <label class="champ">Effacer les positions GPS après (jours) <input type="number" id="r-conservation" min="7" max="3650"></label>
+          </div>
+        </details>
+      </div>
+      <div class="barre-enregistrer" id="barre-enregistrer">
+        <span class="doux petit" id="etat-reglages">Réglages à jour</span>
+        <button class="btn btn-plein" type="submit">Enregistrer</button>
+      </div>
+      <p class="centre" style="margin-top:24px"><button class="lien" type="button" id="deconnexion">Se déconnecter</button></p>
+    </form>
+  </section>
+</div>
+
+<div class="toast-zone" id="toasts" aria-live="polite"></div>
+<div id="modale-zone"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js" integrity="sha256-hZaWX+kY5lZgChtWjToWj1wNPSKmAIhrtvRKZVXbAec=" crossorigin="anonymous"></script>
+<script src="config.js"></script>
+<script src="commun.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>

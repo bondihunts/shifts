@@ -1,0 +1,12 @@
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; connect-src 'self' https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/ https://pjbqbdvkdgywwqcxkpys.supabase.co wss://pjbqbdvkdgywwqcxkpys.supabase.co https://api-adresse.data.gouv.fr; frame-src https://www.openstreetmap.org; manifest-src 'self'; worker-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'self'
+  Referrer-Policy: no-referrer
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(self), camera=(), microphone=(), payment=()
+  X-Robots-Tag: noindex, nofollow
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  Cache-Control: no-cache
+/icones/*
+  Cache-Control: public, max-age=604800
